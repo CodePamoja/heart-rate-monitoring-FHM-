@@ -1,20 +1,24 @@
-
 import socket
-
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-ipadrr = "192.168.0.69"
-s.bind((ipadrr, 1234))
-s.listen(5)
-
+serv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+print('socket succesfuly created')
+serv.bind(('localhost', 12345))
+print('socket bound')
+serv.listen(5)
 while True:
-    clientsocket, address = s.accept()
-    addr = socket.gethostbyaddr(address[0])
+    conn, addr = serv.accept()
+    print('Got connection from', addr)
+    from_client = ''
+    while True:
+        data = conn.recv(4096)
+        if not data:
+            break
 
-    print(f"Established connection with{address}")
+        file = open("rawData", "wb")
+        file.write(data)
+        file.close()
+        conn.sendall(b"I am SERVER\n")
+    conn.close()
+    print ('client disconnected')
 
-    clientsocket.send(bytes(f"welcome to the server{addr}", "utf-8"))
 
-    mag = clientsocket.recv(1234)
-    print(mag.decode("utf-8"))
-    if "prepare" == mag.decode("utf-8"):
-        clientsocket.send(bytes("send", "utf-8"))
+
