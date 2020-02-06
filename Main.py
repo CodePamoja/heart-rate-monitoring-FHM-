@@ -1,4 +1,5 @@
 import sqlite3
+import uuid
 import serial
 import statistics
 import pandas as pd
@@ -13,6 +14,7 @@ except sqlite3.Error as error:
 
 sql_create_table = """CREATE TABLE IF NOT EXISTS fetal_hrm_data  (
                     ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                    uuid VARCHAR,
                     first_name VARCHAR,
                     last_name VARCHAR,
                     date_of_birth DATE,
@@ -187,23 +189,23 @@ def registered_member():
 
 def save_existing(id,phone):
     if id == '':
-        data = (str(national_id), float(weight), float(height), float(temperature), float(heart_rate))
-        cursor.execute("INSERT INTO fetal_hrm_data(id_number,weight,height,temperature,heart_rate)VALUES(?,?,?,?,?)", data)
+        data = (uuid.uuid4().hex, str(national_id), float(weight), float(height), float(temperature), float(heart_rate))
+        cursor.execute("INSERT INTO fetal_hrm_data(uuid,id_number,weight,height,temperature,heart_rate)VALUES(?,?,?,?,?,?)", data)
         connection.commit()
         print("Data Saved Successfully!\n")
         return
     else:
-        data = (str(phone_number), float(weight), float(height), float(temperature), float(heart_rate))
-        cursor.execute("INSERT INTO fetal_hrm_data(phone_number,weight,height,temperature,heart_rate)VALUES(?,?,?,?,?)", data)
+        data = (uuid.uuid4().hex, str(phone_number), float(weight), float(height), float(temperature), float(heart_rate))
+        cursor.execute("INSERT INTO fetal_hrm_data(uuid,phone_number,weight,height,temperature,heart_rate)VALUES(?,?,?,?,?,?)", data)
         connection.commit()
         print("Data Saved Successfully!\n")
         return
 
 
 def save_new():
-    data = (str(national_id), str(phone_number), str(first_name), str(last_name), str(date_of_birth), str(location), str(pregnancy_type), str(expected_delivery_date), str(pregnancy_count), float(height), float(weight), float(temperature), float(heart_rate))
+    data = (uuid.uuid4().hex, str(national_id), str(phone_number), str(first_name), str(last_name), str(date_of_birth), str(location), str(pregnancy_type), str(expected_delivery_date), str(pregnancy_count), float(height), float(weight), float(temperature), float(heart_rate))
     cursor.execute(
-        "INSERT INTO fetal_hrm_data(id_number,phone_number,first_name,last_name, date_of_birth, location,pregnancy_type,expected_delivery_date,pregnancy_count,height,weight,temperature,heart_rate)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)", data)
+        "INSERT INTO fetal_hrm_data(uuid,id_number,phone_number,first_name,last_name, date_of_birth, location,pregnancy_type,expected_delivery_date,pregnancy_count,height,weight,temperature,heart_rate)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)", data)
     connection.commit()
     print("Record Saved Successfully\n")
     

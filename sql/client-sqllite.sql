@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS fetal_hrm_data  (
      ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+     uuid VARCHAR,
      first_name VARCHAR,
      last_name VARCHAR,
      date_of_birth DATE,
