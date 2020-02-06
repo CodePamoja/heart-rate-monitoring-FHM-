@@ -26,5 +26,6 @@ while True:
             print(y["id_number"])
 
         conn.send(bytes(json.dumps(arry), "utf-8"))
-        conn.close()
-        print('client disconnected')
+    conn.close()
+    print('client disconnected')
+
