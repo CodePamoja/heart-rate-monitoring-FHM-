@@ -2,17 +2,8 @@ import json
 import sqlite3 as sqlite
 import socket
 
-
-def send_message(data):
-    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client.connect(('localhost', 12345))
-    dataa = json.dumps(data)
-    client.send(bytes(dataa, "utf-8"))
-    from_server = client.recv(4096)
-    client.close()
-    print(from_server)
-
-
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect(('localhost', 12345))
 con = sqlite.connect('Fetal.db')
 
 with con:
@@ -20,6 +11,18 @@ with con:
     cur.execute("SELECT * FROM fetal_hrm_data")
     myresult1 = cur.fetchall()
     # print(myresult1[1][2:5])
+
+
+def delete_table():
+    from_server = client.recv(4096)
+    print(from_server.decode("utf-8"))
+
+
+
+def send_message(dat):
+    dataa = json.dumps(dat)
+    client.send(bytes(dataa, "utf-8"))
+
 
 data = []
 for i in range(len(myresult1)):
@@ -37,3 +40,4 @@ for i in range(len(myresult1)):
     data.append(messaged)
 
 send_message(data)
+delete_table()

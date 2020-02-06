@@ -28,3 +28,4 @@ while True:
         conn.send(bytes(json.dumps(arry), "utf-8"))
     conn.close()
     print('client disconnected')
+
