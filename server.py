@@ -1,5 +1,6 @@
 import socket
 import json
+import psycopg2
 
 serv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 print('socket succesfuly created')
@@ -22,10 +23,9 @@ while True:
         x = data.decode("utf-8")
         arry = []
         for y in json.loads(x):
-            arry.append(y["id_number"])
-            print(y["id_number"])
+            arry.append(y["id"])
+            print(y["id"])
 
         conn.send(bytes(json.dumps(arry), "utf-8"))
-    conn.close()
-    print('client disconnected')
-
+        conn.close()
+        print('client disconnected')
