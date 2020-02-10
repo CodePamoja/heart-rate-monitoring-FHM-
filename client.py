@@ -28,8 +28,8 @@ def delete_data():
 		    char2 = str1[0]
 		    for n in received:
 		        if n == char2:
-		            x = cur.execute("""DELETE from fetal_hrm_data where id =? """ , (char2,))
-		            con.commit()
+		            #x = cur.execute("""DELETE from fetal_hrm_data where id =? """ , (char2,))
+		            #con.commit()
 		            print("Record deleted successfully ")
 		            cur.close()
 	except con.Error as error:
@@ -54,7 +54,7 @@ for i in range(len(myresult1)):
           "expected_delivery_date": myresult1[i][9],
           "pregnancy_count": myresult1[i][10], "health_center": myresult1[i][11],
           "height": myresult1[i][12],
-          "weight": myresult1[i][13], "temparature": myresult1[i][14],
+          "weight": myresult1[i][13], "temperature": myresult1[i][14],
           "heart_rate": myresult1[i][15],
           "fetal_heart_rate": myresult1[i][16], "date_created": myresult1[i][17]})
     messaged = json.loads(message)

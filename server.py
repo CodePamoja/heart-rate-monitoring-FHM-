@@ -35,7 +35,7 @@ con = None
 
 print('Connecting to the PostgreSQL database...')
 try:
-    con = psycopg2.connect(host="localhost",database="fetal_hrm", user="postgres", password="123")
+    con = psycopg2.connect(host="localhost",database="fetal_hrm", user="pi", password="123")
     cursor = con.cursor()
 
     with open('rawData.json', 'r') as client_data:
