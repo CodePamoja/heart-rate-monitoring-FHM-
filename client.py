@@ -19,16 +19,21 @@ def delete_data():
 	    received = from_server.decode("utf-8")
 	    cur.execute("SELECT id FROM fetal_hrm_data ")
 	    array = cur.fetchone()
-	    str1 = ''.join(str(e) for e in array)  # list to string from db
-	    char2 = str1[0]
-	    for n in received:
-	        if n == char2:
-	            x = cur.execute("""DELETE from fetal_hrm_data where id =? """ , (char2,))
-	            con.commit()
-	            print("Record deleted successfully ")
-	            cur.close()
+	    if array == None:
+	    	print('no data in database')
+	    	con.close()
+	    	print('database connection is closed')
+	    else:
+		    str1 = ''.join(str(e) for e in array)  # list to string from db
+		    char2 = str1[0]
+		    for n in received:
+		        if n == char2:
+		            x = cur.execute("""DELETE from fetal_hrm_data where id =? """ , (char2,))
+		            con.commit()
+		            print("Record deleted successfully ")
+		            cur.close()
 	except con.Error as error:
-		print("Failed to delete record from sqlite table",error)
+		print("Failed to delete record from database ",error)
 	finally:
 		if (con):
 			con.close()
