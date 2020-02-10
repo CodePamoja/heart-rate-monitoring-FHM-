@@ -96,50 +96,71 @@ def getmode(reading):
 
 
 def record_vitals():
-    height = input("Height: ")
-    weight = input("Weight: ")
+    global height
+    height = input("Height: ") 
+    global weight
+    weight = input("Weight: ") 
     sensor_vitals()
     
     
 def sensor_vitals():
-    record = input("\nRecord \n1: Temperature \n2: Heart Rate\n")
+    record = input("\nRecord \n1: Temperature \n2: Heart Rate \n3: Continue\n")
     if record == '1':
+        global temperature
         temperature = get_temperature()
+        sensor_vitals()
     elif record == '2':
+        global heart_rate
         heart_rate = get_heartrate()
+        sensor_vitals()
+    elif record == '3':
+        return
     else:
         print("Invalid Option\n")
         sensor_vitals()
 
 def get_temperature():
-    print('Recording Temperature')
-    serial_getter("2")
-    temperature = getmode("temperature")
+    #print('Recording Temperature')
+    #serial_getter("2")
+    #temperature = getmode("tfloat() argument must be a string or a number, not 'NoneType'emperature")
+    temperature = input("Temperature: ")
+    
     return temperature
 
 
 def get_heartrate():
-    print('Place finger of Sensor to Record Heart Rate')
-    serial_getter("1")
-    heart_rate = getmode("heart_rate")
+    #print('Place finger of Sensor to Record Heart Rate')
+    #serial_getter("1")
+    #heart_rate = getmode("heart_rate")
+    heart_rate = input("Heart Rate: ")
     return heart_rate
     
 
 def register():
+    global phone_number
     phone_number = input("Phone Number: ")
+    global national_id
     national_id = input("National ID: ")
     if national_id=="" and phone_number=="":
         print("Provide Phone Number or National ID")
         register()
     else:
+        global first_name
         first_name = input("First Name: ")
+        global last_name
         last_name = input("Last Name: ")
+        global date_of_birth
         date_of_birth = input("Date of Birth: ")
+        global location
         location = input("Location: ")
+        global pregnancy_type
         pregnancy_type = input("Pregnancy Type: ")
+        global expected_delivery_date
         expected_delivery_date = input("EDD: ")
+        global pregnancy_count
         pregnancy_count = input("Pregnancy Count: ")
         record_vitals()
+        save_new()
         main_menu()
 
 
@@ -160,24 +181,28 @@ def new_member():
         new_member()
 
 def registered_member():
+    global phone_number
+    global national_id
     identifier = input("\nUse Identifier \n1: Phone Number \n2: National ID \n0: Back \t00: Exit\n")
     if identifier == "1":
-        phone_number = input("2Enter Phone Number: ")
+        phone_number = input("Enter Phone Number: ")
+        national_id = ""
         if phone_number == "":
             print("Phone Number is Required")
             registered_member()
         else:
             record_vitals()
-            save_new('',phone_number)
+            save_existing('',phone_number)
             main_menu()
     elif identifier == "2":
         national_id = input("Enter National ID: ")
+        phone_number = ""
         if national_id == "":
             print("National ID is Required")
             registered_member()
         else:
             record_vitals()
-            save_new(id,'')
+            save_existing(id,'')
             main_menu()
     elif identifier == '0':
         main_menu()
@@ -189,13 +214,13 @@ def registered_member():
 
 def save_existing(id,phone):
     if id == '':
-        data = (uuid.uuid4().hex, str(national_id), float(weight), float(height), float(temperature), float(heart_rate))
+        data = (str(uuid.uuid4().hex), str(national_id), float(weight), float(height), float(temperature), float(heart_rate))
         cursor.execute("INSERT INTO fetal_hrm_data(uuid,id_number,weight,height,temperature,heart_rate)VALUES(?,?,?,?,?,?)", data)
         connection.commit()
         print("Data Saved Successfully!\n")
         return
     else:
-        data = (uuid.uuid4().hex, str(phone_number), float(weight), float(height), float(temperature), float(heart_rate))
+        data = (str(uuid.uuid4().hex), str(phone_number), float(weight), float(height), float(temperature), float(heart_rate))
         cursor.execute("INSERT INTO fetal_hrm_data(uuid,phone_number,weight,height,temperature,heart_rate)VALUES(?,?,?,?,?,?)", data)
         connection.commit()
         print("Data Saved Successfully!\n")
@@ -203,7 +228,7 @@ def save_existing(id,phone):
 
 
 def save_new():
-    data = (uuid.uuid4().hex, str(national_id), str(phone_number), str(first_name), str(last_name), str(date_of_birth), str(location), str(pregnancy_type), str(expected_delivery_date), str(pregnancy_count), float(height), float(weight), float(temperature), float(heart_rate))
+    data = (str(uuid.uuid4().hex), str(national_id), str(phone_number), str(first_name), str(last_name), str(date_of_birth), str(location), str(pregnancy_type), str(expected_delivery_date), str(pregnancy_count), float(height), float(weight), float(temperature), float(heart_rate))
     cursor.execute(
         "INSERT INTO fetal_hrm_data(uuid,id_number,phone_number,first_name,last_name, date_of_birth, location,pregnancy_type,expected_delivery_date,pregnancy_count,height,weight,temperature,heart_rate)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)", data)
     connection.commit()
@@ -240,17 +265,4 @@ def main_menu():
         main_menu()
 
 print("Fetal Heart Rate Monitor...")
-first_name = None
-last_name = None
-date_of_birth = None
-location = None
-pregnancy_type = None
-expected_delivery_date = None
-pregnancy_count = None
-height = None
-weight = None
-temperature = None
-heart_rate = None
-phone_number = None
-national_id = None
 main_menu()
