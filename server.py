@@ -19,10 +19,16 @@ while True:
         file = open("rawData.json", "wb")
         file.write(data)
         file.close()
-        conn.sendall(b"I am SERVER\n")
-    conn.close()
-    print ('client disconnected')
+        
+        x = data.decode("utf-8")
+        arry = []
+        for y in json.loads(x):
+            arry.append(y["id"])
+            print(y["id"])
 
+        conn.send(bytes(json.dumps(arry), "utf-8"))
+        conn.close()
+        print('client disconnected')
 
 """ Connect to the PostgreSQL database server """
 con = None

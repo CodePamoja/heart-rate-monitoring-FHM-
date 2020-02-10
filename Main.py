@@ -37,7 +37,7 @@ cursor.execute(sql_create_table)
 
 
 def serial_getter(x):
-    ser = serial.Serial("/dev/ttyACM0")
+    ser = serial.Serial("COM9 (Arduino/Genuino Uno)")
     ser.baudrate = '115200'
 
     if x == "1":
@@ -156,13 +156,13 @@ def new_member():
     elif action == '00':
         exit()
     else:
-        print("Invalid Option\n")
+        print("Invalid Optio1n\n")
         new_member()
 
 def registered_member():
     identifier = input("\nUse Identifier \n1: Phone Number \n2: National ID \n0: Back \t00: Exit\n")
     if identifier == "1":
-        phone_number = input("Enter Phone Number: ")
+        phone_number = input("2Enter Phone Number: ")
         if phone_number == "":
             print("Phone Number is Required")
             registered_member()
