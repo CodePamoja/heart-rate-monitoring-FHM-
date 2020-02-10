@@ -30,8 +30,9 @@ def delete_data():
 		        if n == char2:
 		            x = cur.execute("""DELETE from fetal_hrm_data where id =? """ , (char2,))
 		            con.commit()
-		            print("Record deleted successfully ")
+		            print("data deleted successfully ")
 		            cur.close()
+
 	except con.Error as error:
 		print("Failed to delete record from database ",error)
 	finally:
@@ -47,17 +48,16 @@ def send_message(dat):
 
 data = []
 for i in range(len(myresult1)):
-    message = json.dumps \
-        ({"id": myresult1[i][0], "first_name": myresult1[i][1], "last_name": myresult1[i][2],
-          "date_of_birth": myresult1[i][3], "phone_number": myresult1[i][4],
-          "id_number": myresult1[i][5],
-          "location": myresult1[i][6], "pregnancy_type": myresult1[i][7],
-          "expected_delivery_date": myresult1[i][8],
-          "pregnancy_count": myresult1[i][9], "health_center": myresult1[i][10],
-          "height": myresult1[i][11],
-          "weight": myresult1[i][12], "temparature": myresult1[i][13],
-          "heart_rate": myresult1[i][14],
-          "fetal_heart_rate": myresult1[i][15], "date_created": myresult1[i][16]})
+    message = json.dumps({"id": myresult1[i][0],"uuid":myresult1[]i[1],"first_name": myresult1[i][2], "last_name": myresult1[i][3],
+          "date_of_birth": myresult1[i][4], "phone_number": myresult1[i][5],
+          "id_number": myresult1[i][6],
+          "location": myresult1[i][7], "pregnancy_type": myresult1[i][8],
+          "expected_delivery_date": myresult1[i][9],
+          "pregnancy_count": myresult1[i][10], "health_center": myresult1[i][11],
+          "height": myresult1[i][12],
+          "weight": myresult1[i][13], "temparature": myresult1[i][14],
+          "heart_rate": myresult1[i][15],
+          "fetal_heart_rate": myresult1[i][16], "date_created": myresult1[i][17]})
     messaged = json.loads(message)
     data.append(messaged)
 
