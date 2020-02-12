@@ -159,8 +159,9 @@ def register():
         expected_delivery_date = input("EDD: ")
         global pregnancy_count
         pregnancy_count = input("Pregnancy Count: ")
-        record_vitals()
         save_new()
+        print("\nRecord Vitals. . .")
+        registered_member()
         main_menu()
 
 
@@ -177,13 +178,11 @@ def new_member():
     elif action == '00':
         exit()
     else:
-        print("Invalid Optio1n\n")
+        print("Invalid Option\n")
         new_member()
 
 def registered_member():
-    global phone_number
-    global national_id
-    identifier = input("\nUse Identifier \n1: Phone Number \n2: National ID \n0: Back \t00: Exit\n")
+    identifier = input("\nUse Identifier to Record \n1: Phone Number \n2: National ID \n0: Menu \t00: Exit\n")
     if identifier == "1":
         phone_number = input("Enter Phone Number: ")
         national_id = ""
@@ -202,7 +201,7 @@ def registered_member():
             registered_member()
         else:
             record_vitals()
-            save_existing(id,'')
+            save_existing(national_id,'')
             main_menu()
     elif identifier == '0':
         main_menu()
@@ -212,15 +211,15 @@ def registered_member():
         print("Invalid Option\n")
         registered_member()
 
-def save_existing(id,phone):
-    if id == '':
-        data = (str(uuid.uuid4().hex), str(national_id), float(weight), float(height), float(temperature), float(heart_rate))
+def save_existing(id_no,phone):
+    if id_no == '':
+        data = (str(uuid.uuid4().hex), str(phone), float(weight), float(height), float(temperature), float(heart_rate))
         cursor.execute("INSERT INTO fetal_hrm_data(uuid,id_number,weight,height,temperature,heart_rate)VALUES(?,?,?,?,?,?)", data)
         connection.commit()
         print("Data Saved Successfully!\n")
         return
     else:
-        data = (str(uuid.uuid4().hex), str(phone_number), float(weight), float(height), float(temperature), float(heart_rate))
+        data = (str(uuid.uuid4().hex), str(id_no), float(weight), float(height), float(temperature), float(heart_rate))
         cursor.execute("INSERT INTO fetal_hrm_data(uuid,phone_number,weight,height,temperature,heart_rate)VALUES(?,?,?,?,?,?)", data)
         connection.commit()
         print("Data Saved Successfully!\n")
@@ -228,9 +227,9 @@ def save_existing(id,phone):
 
 
 def save_new():
-    data = (str(uuid.uuid4().hex), str(national_id), str(phone_number), str(first_name), str(last_name), str(date_of_birth), str(location), str(pregnancy_type), str(expected_delivery_date), str(pregnancy_count), float(height), float(weight), float(temperature), float(heart_rate))
+    data = (str(uuid.uuid4().hex), str(national_id), str(phone_number), str(first_name), str(last_name), str(date_of_birth), str(location), str(pregnancy_type), str(expected_delivery_date), str(pregnancy_count))
     cursor.execute(
-        "INSERT INTO fetal_hrm_data(uuid,id_number,phone_number,first_name,last_name, date_of_birth, location,pregnancy_type,expected_delivery_date,pregnancy_count,height,weight,temperature,heart_rate)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)", data)
+        "INSERT INTO fetal_hrm_data(uuid,id_number,phone_number,first_name,last_name, date_of_birth, location,pregnancy_type,expected_delivery_date,pregnancy_count)VALUES(?,?,?,?,?,?,?,?,?,?)", data)
     connection.commit()
     print("Record Saved Successfully\n")
     
