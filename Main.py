@@ -214,13 +214,13 @@ def registered_member():
 def save_existing(id_no,phone):
     if id_no == '':
         data = (str(uuid.uuid4().hex), str(phone), float(weight), float(height), float(temperature), float(heart_rate))
-        cursor.execute("INSERT INTO fetal_hrm_data(uuid,id_number,weight,height,temperature,heart_rate)VALUES(?,?,?,?,?,?)", data)
+        cursor.execute("INSERT INTO fetal_hrm_data(uuid,phone_number,weight,height,temperature,heart_rate)VALUES(?,?,?,?,?,?)", data)
         connection.commit()
         print("Data Saved Successfully!\n")
         return
     else:
         data = (str(uuid.uuid4().hex), str(id_no), float(weight), float(height), float(temperature), float(heart_rate))
-        cursor.execute("INSERT INTO fetal_hrm_data(uuid,phone_number,weight,height,temperature,heart_rate)VALUES(?,?,?,?,?,?)", data)
+        cursor.execute("INSERT INTO fetal_hrm_data(uuid,id_number,weight,height,temperature,heart_rate)VALUES(?,?,?,?,?,?)", data)
         connection.commit()
         print("Data Saved Successfully!\n")
         return

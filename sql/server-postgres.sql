@@ -6,6 +6,7 @@ CREATE TABLE maternal_information (
 	date_of_birth DATE NOT NULL,
 	phone_number TEXT UNIQUE,
 	id_number TEXT UNIQUE,
+	client_created TEXT,
 	date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
