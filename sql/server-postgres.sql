@@ -20,9 +20,10 @@ CREATE TABLE pregnancy_information (
 
 CREATE TABLE monitor_readings (
 	hrm_data_ID SERIAL PRIMARY KEY,
-	uuid TEXT NOT NULL,
-	maternal_ID INTEGER,
-	health_centre TEXT,
+	uuid TEXT UNIQUE NOT NULL,
+	phone_number TEXT,
+	id_number TEXT,
+	device_id TEXT,
 	height REAL,
 	weight REAL,
 	temperature REAL,
