@@ -30,6 +30,5 @@ CREATE TABLE monitor_readings (
 	heart_rate REAL,
 	fetal_heart_rate REAL,
 	client_created TEXT,
-	data_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	FOREIGN KEY (maternal_ID) REFERENCES maternal_information(maternal_ID) ON UPDATE CASCADE ON DELETE CASCADE
+	data_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
