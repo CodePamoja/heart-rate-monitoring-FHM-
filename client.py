@@ -3,20 +3,20 @@ import sqlite3 as sqlite
 import socket
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(('localhost', 12345))
+client.connect(('localhost', 1234))
 con = sqlite.connect('Fetal.db')
 
 with con:
     cur = con.cursor()
     cur.execute("SELECT * FROM fetal_hrm_data")
     myresult1 = cur.fetchall()
-    # print(myresult1[1][2:5])
 
 
 def delete_data():
 	try:
 	    from_server = client.recv(4096)
 	    received = from_server.decode("utf-8")
+
 	    cur.execute("SELECT id FROM fetal_hrm_data ")
 	    array = cur.fetchone()
 	    if array == None:
@@ -24,25 +24,24 @@ def delete_data():
 	    	con.close()
 	    	print('database connection is closed')
 	    else:
-		    str1 = ''.join(str(e) for e in array)  # list to string from db
-		    char2 = str1[0]
-		    for n in received:
-		        if n == char2:
-		            #x = cur.execute("""DELETE from fetal_hrm_data where id =? """ , (char2,))
-		            #con.commit()
-		            print("Record deleted successfully ")
-		            cur.close()
+	    	response = json.loads(received)
+	    	for obj in response:
+	    		print(obj)
+	    		cur.execute("UPDATE fetal_hrm_data SET server_sync = 1 WHERE uuid =? ",(obj,))
+	    	con.commit()
+	    	print("Local Database Updated Successfully...")
 	except con.Error as error:
-		print("Failed to delete record from database ",error)
+		print("Error updating local Database",error)
 	finally:
 		if (con):
 			con.close()
-			print("the database connection is closed")
+			print("Database Connection Closed")
 
 
 def send_message(dat):
     dataa = json.dumps(dat)
     client.send(bytes(dataa, "utf-8"))
+    print("Data sent to Server")
 
 
 data = []
