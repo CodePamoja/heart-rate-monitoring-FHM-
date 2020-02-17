@@ -9,7 +9,7 @@ def save_data():
 
     print('Connecting to the PostgreSQL database...')
     try:
-        con = psycopg2.connect(host="localhost",database="fetal_hrm", user="postgres", password="123")
+        con = psycopg2.connect(host="localhost",database="fetal_hrm", user="pi", password="123")
         con.autocommit = True
         cursor = con.cursor()
 
@@ -69,17 +69,16 @@ serv.listen(5)
 while True:
     conn, addr = serv.accept()
     print('Got connection from', addr)
-    while True:
-        data = conn.recv(4096)
-        if not data:
-            break
+    data = conn.recv(4096)
+    if not data:
+        break
 
-        file = open("rawData.json", "wb")
-        file.write(data)
-        file.close()
+    file = open("rawData.json", "wb")
+    file.write(data)
+    file.close()
         
-        arry = save_data()
+    arry = save_data()
 
-        conn.send(bytes(json.dumps(arry), "utf-8"))
-        conn.close()
-        print('client disconnected')
+    conn.send(bytes(json.dumps(arry), "utf-8"))
+    conn.close()
+    print('client disconnected')
