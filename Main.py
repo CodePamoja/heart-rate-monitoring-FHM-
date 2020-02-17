@@ -4,6 +4,7 @@ import serial
 import statistics
 import pandas as pd
 import socket
+import client
 
 try:
     connection = sqlite3.connect("Fetal.db")
@@ -236,11 +237,19 @@ def save_new():
 
 def sub_menu():
     print("\nFetal Heart Rate Monitor...\n")
-    option = input("Select Option... \n1: Record Patient Data \n2: Send Data to Server \n0: Exit\n")
+    option = input("Select Option... \n1: Record Patient Data \n2: View Data in Local Database \n3: Send Data to Server \n0: Exit\n")
     if option == '1':
         main_menu()
     elif option == '2':
+        cursor.execute("SELECT * FROM fetal_hrm_data")
+        results = cursor.fetchall()
+        for res in results:
+            print(res)
+        sub_menu()
+    elif option == '3':
         print('Sending data to server...')
+        client.main()
+        sub_menu()
     elif option == '0':
         exit()
     else:
