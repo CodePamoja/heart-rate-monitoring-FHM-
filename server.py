@@ -63,7 +63,7 @@ def save_data():
 
 serv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 print('socket successfully created')
-serv.bind(('localhost', 1234))
+serv.bind(('192.168.0.75', 12345))
 print('socket bound')
 serv.listen(5)
 while True:
