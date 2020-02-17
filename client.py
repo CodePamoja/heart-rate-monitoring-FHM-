@@ -25,8 +25,8 @@ def delete_data():
 	    	print('database connection is closed')
 	    else:
 	    	response = json.loads(received)
+	    	print("Response received from server...")
 	    	for obj in response:
-	    		print(obj)
 	    		cur.execute("UPDATE fetal_hrm_data SET server_sync = 1 WHERE uuid =? ",(obj,))
 	    	con.commit()
 	    	print("Local Database Updated Successfully...")
